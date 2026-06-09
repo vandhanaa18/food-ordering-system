@@ -1,4 +1,9 @@
-from .tools.order_tool import create_order
+from .tools.order_tool import (
+    create_order,
+    show_order_history,
+    update_order,
+    cancel_order
+)
 from google.adk.agents import Agent
 from .prompt import ORDER_PROMPT
 
@@ -7,5 +12,10 @@ order_agent = Agent(
     model="gemini-2.5-flash",
     description="Order Management Agent",
     instruction=ORDER_PROMPT,
-    tools=[create_order]
+    tools=[
+        create_order,
+        show_order_history,
+        update_order,
+        cancel_order
+    ]
 )
