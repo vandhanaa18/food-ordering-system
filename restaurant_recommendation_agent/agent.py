@@ -1,3 +1,4 @@
+from .tools.restaurant_tool import get_restaurants
 from google.adk.agents import Agent
 from .prompt import RESTAURANT_PROMPT
 
