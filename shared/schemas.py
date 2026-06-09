@@ -1,8 +1,9 @@
 ORDER_SCHEMA = {
-    "order_id": "",
     "restaurant": "",
+    "item": "",
     "amount": 0,
+    "order_id": "",
     "payment_status": "",
     "delivery_status": "",
-    "estimated_time": ""
+    "eta": ""
 }
