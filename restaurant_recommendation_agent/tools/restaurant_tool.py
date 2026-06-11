@@ -1,32 +1,27 @@
-def get_restaurants(cuisine: str):
-    restaurants = {
+import os
+import requests
+from dotenv import load_dotenv
 
-        "pizza": [
-            {"name": "Domino's", "rating": 4.5, "price": "Moderate"},
-            {"name": "Pizza Hut", "rating": 4.3, "price": "Moderate"},
-            {"name": "Papa John's", "rating": 4.4, "price": "Premium"}
-        ],
+load_dotenv()
 
-        "burger": [
-            {"name": "McDonald's", "rating": 4.2, "price": "Budget"},
-            {"name": "Burger King", "rating": 4.3, "price": "Moderate"},
-            {"name": "Wendy's", "rating": 4.4, "price": "Premium"}
-        ],
+API_KEY = os.getenv("GOOGLE_API_KEY")
 
-        "south indian": [
-            {"name": "A2B", "rating": 4.6, "price": "Budget"},
-            {"name": "Saravana Bhavan", "rating": 4.7, "price": "Moderate"},
-            {"name": "Sangeetha", "rating": 4.5, "price": "Moderate"}
-        ],
 
-        "chinese": [
-            {"name": "Mainland China", "rating": 4.6, "price": "Premium"},
-            {"name": "China Town", "rating": 4.3, "price": "Moderate"},
-            {"name": "Beijing Bites", "rating": 4.2, "price": "Budget"}
-        ]
+def get_nearby_restaurants(food_item: str):
+
+    url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+
+    params = {
+        "query": f"{food_item} restaurant near me",
+        "key": API_KEY
     }
 
-    return restaurants.get(
-        cuisine.lower(),
-        [{"message": "No restaurants found"}]
-    )
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    restaurants = []
+
+    for place in data.get("results", [])[:5]:
+        restaurants.append(place["name"])
+
+    return restaurants

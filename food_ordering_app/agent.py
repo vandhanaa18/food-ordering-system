@@ -1,9 +1,18 @@
 from google.adk.agents import Agent
 
-from restaurant_recommendation_agent.tools.restaurant_tool import get_restaurants
-from order_management_agent.tools.order_tool import create_order
-from payment_verification_agent.tools.payment_tool import verify_payment
-from delivery_tracking_agent.tools.tracking_tool import track_order
+from restaurant_recommendation_agent.tools.restaurant_tool import (
+    get_nearby_restaurants
+)
+
+from payment_verification_agent.tools.payment_tool import (
+    verify_payment
+)
+
+from delivery_tracking_agent.tools.tracking_tool import (
+    track_delivery
+)
+
+from order_management_agent.agent import order_agent
 
 
 root_agent = Agent(
@@ -15,28 +24,29 @@ You are a Food Ordering Assistant.
 Rules:
 
 1. Restaurant requests:
-Use get_restaurants().
+Use get_nearby_restaurants().
 Recommend suitable restaurants.
 
 2. Order requests:
-Use create_order().
-Generate an order.
+Delegate all order-related tasks to order_management_agent.
+Do NOT directly create orders.
 
 3. Payment requests:
 Use verify_payment().
-Confirm payment status.
 
 4. Delivery requests:
-Use track_order().
-Provide delivery details.
+Use track_delivery().
 
-Only use one tool based on the user's request.
-Never answer unrelated categories.
+Only use one category at a time.
 """,
+
     tools=[
-        get_restaurants,
-        create_order,
+        get_nearby_restaurants,
         verify_payment,
-        track_order
+        track_delivery
+    ],
+
+    sub_agents=[
+        order_agent
     ]
 )
