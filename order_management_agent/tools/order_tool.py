@@ -1,5 +1,6 @@
 import random
 
+
 menu = {
     "veg pizza": 350,
     "farmhouse pizza": 450,
@@ -10,6 +11,7 @@ menu = {
     "south indian meal": 180
 }
 
+
 order_history = []
 
 
@@ -17,16 +19,15 @@ def create_order(item: str, quantity: int = 1):
 
     item = item.lower()
 
+    # Automatically add new dishes if not present
     if item not in menu:
-        return {
-            "error": "Item not available"
-        }
+        menu[item] = random.randint(100, 500)
 
     amount = menu[item] * quantity
 
     order = {
-        "order_id": f"ORD{random.randint(1000,9999)}",
-        "item": item,
+        "order_id": f"ORD{random.randint(1000, 9999)}",
+        "item": item.title(),
         "quantity": quantity,
         "amount": amount
     }
@@ -39,6 +40,7 @@ def create_order(item: str, quantity: int = 1):
 def show_order_history():
     return order_history
 
+
 def update_order(order_id, new_quantity):
 
     for order in order_history:
@@ -46,9 +48,8 @@ def update_order(order_id, new_quantity):
         if order["order_id"] == order_id:
 
             order["quantity"] = new_quantity
-
             order["amount"] = (
-                menu[order["item"]] * new_quantity
+                menu[order["item"].lower()] * new_quantity
             )
 
             return {
@@ -59,6 +60,8 @@ def update_order(order_id, new_quantity):
     return {
         "message": "Order not found"
     }
+
+
 def cancel_order(order_id):
 
     for order in order_history:
@@ -74,3 +77,35 @@ def cancel_order(order_id):
     return {
         "message": "Order not found"
     }
+import os
+from google import genai
+from dotenv import load_dotenv
+
+load_dotenv()
+
+client = genai.Client(
+    api_key=os.getenv("GOOGLE_API_KEY")
+)
+
+def get_food_variants(food_item: str):
+
+    prompt = f"""
+You are a menu generator for an Indian food delivery app similar to Swiggy and Zomato.
+
+Generate 5 varieties of {food_item} with realistic prices that Indian restaurants usually charge.
+
+Keep prices practical and believable.
+
+Return only:
+
+1. Item - ₹Price
+2. Item - ₹Price
+...
+"""
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+
+    return response.text
