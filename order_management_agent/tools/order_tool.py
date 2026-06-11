@@ -90,17 +90,18 @@ client = genai.Client(
 def get_food_variants(food_item: str):
 
     prompt = f"""
-    A customer wants {food_item}.
+You are a menu generator for an Indian food delivery app similar to Swiggy and Zomato.
 
-    Suggest 5 popular varieties of this food with realistic Indian prices in India.
+Generate 5 varieties of {food_item} with realistic prices that Indian restaurants usually charge.
 
-    Format:
+Keep prices practical and believable.
 
-    1. Name - ₹Price
-    2. Name - ₹Price
+Return only:
 
-    Only return the list.
-    """
+1. Item - ₹Price
+2. Item - ₹Price
+...
+"""
 
     response = client.models.generate_content(
         model="gemini-2.5-flash",
