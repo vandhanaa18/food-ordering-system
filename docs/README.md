@@ -19,6 +19,11 @@ works completed:
 - Added support for location-aware restaurant suggestions
 - Enabled LLM-generated recommendation responses
 
+Tools Used:
+
+- Google Gemini API (LLM)
+- Python
+
 ## 2. Order Management Agent
 
 - Managing customer orders
@@ -32,6 +37,13 @@ works completed:
 - Added menu and pricing support
 - Added order history functionality
 
+
+Tools Used:
+
+- Python
+- In-memory data structures (lists and dictionaries)
+
+
 ## 3. Payment Verification Agent
 
 - Simulating payment processing
@@ -43,6 +55,11 @@ works completed:
 - Added payment statuses
 - Added timestamps for payment records
 
+Tools Used:
+
+- Python
+- datetime module
+
 ## 4. Delivery Tracking Agent
 
 - Tracking delivery progress
@@ -53,6 +70,11 @@ works completed:
 - Added delivery stages
 - Added estimated delivery time (ETA)
 - Added delivery partner information
+
+Tools Used:
+
+- Python
+- In-memory data structures
 
 Data Management
 
