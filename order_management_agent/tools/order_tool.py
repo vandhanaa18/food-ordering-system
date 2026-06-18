@@ -1,4 +1,7 @@
 import random
+import os
+from google import genai
+from dotenv import load_dotenv
 
 
 menu = {
@@ -77,17 +80,16 @@ def cancel_order(order_id):
     return {
         "message": "Order not found"
     }
-import os
-from google import genai
-from dotenv import load_dotenv
 
-load_dotenv()
-
-client = genai.Client(
-    api_key=os.getenv("GOOGLE_API_KEY")
-)
 
 def get_food_variants(food_item: str):
+
+    # Lazy initialization of Gemini client
+    load_dotenv()
+
+    client = genai.Client(
+        api_key=os.getenv("GOOGLE_API_KEY")
+    )
 
     prompt = f"""
 You are a menu generator for an Indian food delivery app similar to Swiggy and Zomato.
