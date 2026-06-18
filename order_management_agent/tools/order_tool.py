@@ -2,6 +2,7 @@ import random
 import os
 from google import genai
 from dotenv import load_dotenv
+from shared.schemas import OrderSchema
 
 
 menu = {
@@ -28,16 +29,17 @@ def create_order(item: str, quantity: int = 1):
 
     amount = menu[item] * quantity
 
-    order = {
-        "order_id": f"ORD{random.randint(1000, 9999)}",
-        "item": item.title(),
-        "quantity": quantity,
-        "amount": amount
-    }
+    order = OrderSchema(
+    order_id=f"ORD{random.randint(1000,9999)}",
+    item=item.title(),
+    quantity=quantity,
+    amount=amount
+    )
+
 
     order_history.append(order)
 
-    return order
+    return order.model_dump()
 
 
 def show_order_history():
