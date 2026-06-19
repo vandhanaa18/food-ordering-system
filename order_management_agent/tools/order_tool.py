@@ -30,36 +30,43 @@ def create_order(item: str, quantity: int = 1):
     amount = menu[item] * quantity
 
     order = OrderSchema(
-    order_id=f"ORD{random.randint(1000,9999)}",
-    item=item.title(),
-    quantity=quantity,
-    amount=amount
+        order_id=f"ORD{random.randint(1000,9999)}",
+        item=item.title(),
+        quantity=quantity,
+        amount=amount
     )
-
 
     order_history.append(order)
 
-    return order.model_dump()
+    return {
+        "message": "Order created successfully",
+        "order": order.model_dump()
+    }
 
 
 def show_order_history():
-    return order_history
+
+    return [
+        order.model_dump()
+        for order in order_history
+    ]
 
 
-def update_order(order_id, new_quantity):
+def update_order(order_id: str, new_quantity: int):
 
     for order in order_history:
 
-        if order["order_id"] == order_id:
+        if order.order_id == order_id:
 
-            order["quantity"] = new_quantity
-            order["amount"] = (
-                menu[order["item"].lower()] * new_quantity
+            order.quantity = new_quantity
+
+            order.amount = (
+                menu[order.item.lower()] * new_quantity
             )
 
             return {
                 "message": "Order updated successfully",
-                "order": order
+                "order": order.model_dump()
             }
 
     return {
@@ -67,11 +74,11 @@ def update_order(order_id, new_quantity):
     }
 
 
-def cancel_order(order_id):
+def cancel_order(order_id: str):
 
     for order in order_history:
 
-        if order["order_id"] == order_id:
+        if order.order_id == order_id:
 
             order_history.remove(order)
 
@@ -86,7 +93,6 @@ def cancel_order(order_id):
 
 def get_food_variants(food_item: str):
 
-    # Lazy initialization of Gemini client
     load_dotenv()
 
     client = genai.Client(
@@ -104,7 +110,9 @@ Return only:
 
 1. Item - ₹Price
 2. Item - ₹Price
-...
+3. Item - ₹Price
+4. Item - ₹Price
+5. Item - ₹Price
 """
 
     response = client.models.generate_content(
